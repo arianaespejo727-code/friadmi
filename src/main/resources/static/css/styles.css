@@ -1,0 +1,416 @@
+/* LOGIN ORDENADO FRIIADMI */
+.login-body { margin: 0; background: #0a0a0a; }
+.login-wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+}
+.login-hero {
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  gap: 20px;
+}
+.login-logo {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 16px;
+}
+.login-hero p {
+  color: #d1d1d1;
+  max-width: 440px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.login-card {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px 55px;
+  max-width: 520px;
+  width: 100%;
+  margin: auto;
+}
+.login-badge {
+  background: #fff3cd;
+  color: #7a5b00;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  margin-bottom: 16px;
+}
+@media (max-width: 800px) {
+  .login-wrap { grid-template-columns: 1fr; }
+  .login-hero { padding: 25px; }
+  .login-card { padding: 30px 22px; }
+}
+.login-hero img:nth-of-type(2) { display: none !important; }
+.login-hero img:first-of-type {
+  width: 100% !important;
+  max-width: 480px !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+/* ===== LOGIN VIVO DORADO FRIIADMI ===== */
+.login-card {
+  background: linear-gradient(160deg, #1a1200 0%, #2b1d00 45%, #000000 100%) !important;
+  border: 2px solid #facc15 !important;
+  border-radius: 22px !important;
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.45), 0 0 60px rgba(249, 115, 22, 0.35), inset 0 0 30px rgba(250, 204, 21, 0.12) !important;
+  padding: 45px 42px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  animation: flotar 3.5s ease-in-out infinite !important;
+}
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(120deg, transparent 40%, rgba(250,204,21,0.25) 50%, transparent 60%);
+  animation: brillo 3s linear infinite;
+  pointer-events: none;
+}
+.login-card h2, .login-card h1 {
+  color: #facc15 !important;
+  font-size: 28px !important;
+  text-shadow: 0 0 15px rgba(250,204,21,0.9), 0 0 30px rgba(249,115,22,0.6) !important;
+}
+.login-card p { color: #fef3c7 !important; }
+.login-card label { color: #fde68a !important; font-weight: 700 !important; }
+.login-card input {
+  background: #000 !important;
+  border: 1.5px solid #facc15 !important;
+  color: #fff !important;
+  padding: 13px !important;
+  border-radius: 12px !important;
+  outline: none !important;
+}
+.login-card input:focus {
+  box-shadow: 0 0 0 3px rgba(250,204,21,0.35), 0 0 20px rgba(250,204,21,0.7) !important;
+  border-color: #fde047 !important;
+}
+.login-card button {
+  background: linear-gradient(90deg, #facc15, #f97316, #facc15) !important;
+  background-size: 200% auto !important;
+  color: #000 !important;
+  font-weight: 900 !important;
+  font-size: 17px !important;
+  border: none !important;
+  padding: 14px !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 25px rgba(250,204,21,0.8) !important;
+  animation: botonDor 2s linear infinite !important;
+  transition: transform 0.2s !important;
+}
+.login-card button:hover { transform: scale(1.03) !important; }
+.login-badge {
+  background: #facc15 !important;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(250,204,21,0.9) !important;
+}
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes brillo {
+  0% { transform: translateX(-100%) rotate(0deg); }
+  100% { transform: translateX(100%) rotate(0deg); }
+}
+@keyframes botonDor {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ===== DASHBOARD BONITO FRIIADMI ===== */
+.app {
+  display: flex !important;
+  min-height: 100vh !important;
+  background: #000 !important;
+  color: #fff !important;
+  font-family: sans-serif !important;
+}
+body { background: #000 !important; color: #fff !important; font-family: sans-serif !important; padding: 0 !important; margin: 0 !important; }
+.content {
+  flex: 1 !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  padding: 28px !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+.page-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 22px !important;
+}
+.page-header h1 { color: #facc15 !important; font-size: 32px !important; margin: 0 !important; }
+.subtitle { color: #d1d1d1 !important; margin: 4px 0 0 !important; }
+.btn-primary {
+  background: linear-gradient(90deg, #facc15, #f97316) !important;
+  color: #000 !important;
+  font-weight: 900 !important;
+  padding: 10px 18px !important;
+  border-radius: 12px !important;
+  text-decoration: none !important;
+  box-shadow: 0 0 18px rgba(250,204,21,.6) !important;
+}
+.prize-hero {
+  background: linear-gradient(160deg, #1a1200, #2b1d00, #000) !important;
+  border: 2px solid #facc15 !important;
+  border-radius: 20px !important;
+  padding: 22px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  box-shadow: 0 0 25px rgba(250,204,21,.35) !important;
+  margin-bottom: 20px !important;
+}
+.prize-label { color: #fde68a !important; font-size: 13px !important; display: block !important; }
+.prize-amount { color: #facc15 !important; font-size: 38px !important; text-shadow: 0 0 15px rgba(250,204,21,.8) !important; }
+.prize-calc { display: flex !important; gap: 30px !important; margin: 0 !important; }
+.prize-calc dt { color: #d1d1d1 !important; font-size: 13px !important; }
+.prize-calc dd { color: #fff !important; font-weight: 800 !important; margin: 4px 0 0 !important; }
+.stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  margin-bottom: 20px !important;
+}
+.stat {
+  background: #171717 !important;
+  border: 1px solid #333 !important;
+  border-radius: 16px !important;
+  padding: 18px !important;
+}
+.stat-label { color: #a3a3a3 !important; font-size: 13px !important; display: block !important; }
+.stat-value { color: #fff !important; font-size: 28px !important; display: block !important; margin: 6px 0 !important; }
+.stat-note { color: #d1d1d1 !important; font-size: 12px !important; }
+.stat-warn { border-color: #facc15 !important; }
+.stat-warn .stat-value { color: #facc15 !important; }
+.card {
+  background: #171717 !important;
+  border: 1px solid #333 !important;
+  border-radius: 16px !important;
+  padding: 18px !important;
+}
+.card h2 { color: #fff !important; margin: 0 !important; }
+.card-head { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 12px !important; }
+.link { color: #facc15 !important; text-decoration: none !important; font-weight: 700 !important; }
+.table { width: 100% !important; border-collapse: collapse !important; color: #fff !important; }
+.table th { color: #a3a3a3 !important; text-align: left !important; padding: 10px !important; border-bottom: 1px solid #333 !important; }
+.table td { padding: 10px !important; border-bottom: 1px solid #262626 !important; }
+.empty { color: #d1d1d1 !important; text-align: center !important; padding: 20px !important; }
+.pos { background: #262626 !important; padding: 4px 9px !important; border-radius: 20px !important; font-weight: 800 !important; }
+.pos-1 { background: #facc15 !important; color: #000 !important; }
+.pos-2 { background: #d1d1d1 !important; color: #000 !important; }
+.pos-3 { background: #f97316 !important; color: #fff !important; }
+@media (max-width: 800px) {
+  .stats-grid { grid-template-columns: 1fr 1fr !important; }
+  .prize-hero { flex-direction: column !important; align-items: flex-start !important; gap: 15px !important; }
+}
+
+/* ===== SIDEBAR CON FONDO LOGO - NO LO TOQUES, ESTE YA ESTA BIEN ===== */
+.sidebar {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  background: #000 url('/img/PRINCIPAL.jpg?v=99') no-repeat center center !important;
+  background-size: cover !important;
+  border-right: 2px solid #facc15 !important;
+  padding: 20px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+.sidebar::before {
+  content: ""; position: absolute; inset: 0;
+  background: rgba(0,0,0,0.85) !important;
+  z-index: 0;
+}
+.sidebar > * { position: relative !important; z-index: 1 !important; }
+.sidebar a, .sidebar .brand, .sidebar .logo {
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  border-radius: 12px !important;
+  white-space: nowrap !important;
+}
+.sidebar .brand span {
+  width: 34px !important; height: 34px !important;
+  background: #facc15 !important; color: #000 !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  border-radius: 10px !important; font-weight: 900 !important; flex-shrink: 0 !important;
+}
+.sidebar nav { display: flex !important; flex-direction: column !important; gap: 6px !important; }
+.sidebar a:hover, .sidebar a.active { background: #facc15 !important; color: #000 !important; }
+.sidebar a:hover *, .sidebar a.active * { color: #000 !important; }
+.sidebar form { background: transparent !important; border: none !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; max-width: none !important; display: block !important; }
+.sidebar .logout { margin-top: auto !important; }
+.sidebar .logout button {
+  width: 100% !important; background: transparent !important; border: 1.5px solid #f97316 !important;
+  color: #fb923c !important; padding: 10px !important; border-radius: 10px !important; cursor: pointer !important; font-weight: 800 !important;
+}
+
+/* ===== FORMULARIO NUEVO JUGADOR ===== */
+.content h1, .content h2, .content h3 { color: #facc15 !important; }
+.content form {
+  background: #171717 !important;
+  border: 1px solid #facc15 !important;
+  border-radius: 18px !important;
+  padding: 24px !important;
+  max-width: 620px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  box-shadow: 0 0 25px rgba(250,204,21,.3) !important;
+}
+.content label {
+  color: #fde68a !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  display: block !important;
+  margin-bottom: 4px !important;
+}
+.content input, .content select, .content textarea {
+  width: 100% !important;
+  background: #000 !important;
+  border: 1.5px solid #444 !important;
+  color: #fff !important;
+  padding: 11px 12px !important;
+  border-radius: 10px !important;
+  box-sizing: border-box !important;
+}
+.content input:focus, .content select:focus {
+  border-color: #facc15 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(250,204,21,.3) !important;
+}
+.content input[type="checkbox"] { width: auto !important; }
+.content button, .content .btn {
+  background: linear-gradient(90deg, #facc15, #f97316) !important;
+  color: #000 !important;
+  font-weight: 900 !important;
+  padding: 12px 20px !important;
+  border: none !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+}
+.content a { color: #facc15 !important; }
+
+/* ===== LOGIN REAL - izquierda / derecha ===== */
+.main.wrap{display:flex !important; min-height:100vh !important; background:#000 !important;}
+.izquierda{flex:1 !important; background:#000 !important; display:flex !important; align-items:center !important; justify-content:center !important;}
+.izquierda img{width:100% !important; max-width:520px !important; border-radius:16px !important;}
+.derecha{flex:1 !important; background:linear-gradient(160deg,#1a1200,#2b1d00,#000) !important; border:2px solid #facc15 !important; display:flex !important; flex-direction:column !important; justify-content:center !important; padding:40px !important;}
+.derecha h2,.derecha h1{color:#facc15 !important; font-size:28px !important; text-shadow:0 0 15px rgba(250,204,21,.9) !important;}
+.derecha p{color:#fef3c7 !important;}
+.derecha label{color:#fde68a !important; font-weight:700 !important;}
+.derecha input{background:#000 !important; border:1.5px solid #facc15 !important; color:#fff !important; padding:13px !important; border-radius:12px !important;}
+.derecha button{background:linear-gradient(90deg,#facc15,#f97316,#facc15) !important; color:#000 !important; font-weight:900 !important; font-size:17px !important; padding:14px !important; border-radius:12px !important; box-shadow:0 0 25px rgba(250,204,21,.8) !important;}
+@media(max-width:800px){.main.wrap{flex-direction:column !important;}}
+
+/* ===== PARCHE FINAL ===== */
+html, body { margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; background: #000 !important; }
+.app { display: flex !important; width: 100% !important; min-height: 100vh !important; align-items: stretch !important; }
+.sidebar { position: sticky !important; top: 0 !important; height: 100vh !important; }
+.content { flex: 1 !important; min-width: 0 !important; width: auto !important; overflow-x: auto !important; }
+.content table, .content .table { min-width: 750px !important; }
+.content form { margin: 0 !important; }
+
+/* ===== MODAL NUEVO JUGADOR ===== */
+#modalJugador, .modal {
+  display: none !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(0,0,0,0.85) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+}
+#modalJugador.open, #modalJugador.show, .modal.open, .modal.show {
+  display: flex !important;
+}
+#modalJugador .modal-content, #modalJugador > div, .modal .modal-content {
+  background: #171717 !important;
+  border: 2px solid #facc15 !important;
+  border-radius: 18px !important;
+  padding: 24px !important;
+  width: 100% !important;
+  max-width: 620px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  margin: auto !important;
+  box-shadow: 0 0 30px rgba(250,204,21,.5) !important;
+}
+#modalJugador form, .modal form {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+}
+#modalJugador input, #modalJugador select, .modal input, .modal select {
+  width: 100% !important;
+  background: #000 !important;
+  border: 1.5px solid #444 !important;
+  color: #fff !important;
+  padding: 11px !important;
+  border-radius: 10px !important;
+}
+
+/* ===== PARCHE FINAL LIMPIO - ESTE ES EL QUE MANDA ===== */
+body::before {
+  display: none !important;
+}
+.sidebar {
+  background: #000 url('/img/PRINCIPAL.jpg?v=99') no-repeat center center !important;
+  background-size: cover !important;
+  position: sticky !important;
+}
+.sidebar::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,0.85) !important;
+  z-index: 0 !important;
+}
+.sidebar > * { position: relative !important; z-index: 1 !important; }
+.content {
+  background-color: #0a0a0a !important;
+  background-image: url('/img/LOGO.jpg?v=99') !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+ background-size: 85% auto !important;
+  background-attachment: fixed !important;
+}
+.content > * { position: relative !important; z-index: 1 !important; }
+.content .card, .content .stat {
+  background: rgba(23,23,23,0.92) !important;
+}

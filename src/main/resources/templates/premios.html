@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pagos y premios')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments/layout :: sidebar('premios')}"></aside>
+
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Pagos y premios</h1>
+                <p class="subtitle" th:text="${config.nombreTorneo}">Torneo FRIIADMI</p>
+            </div>
+        </header>
+
+        <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+        <!-- Cálculo: Pozo total - Comisión = Premio ganador -->
+        <section class="card">
+            <div class="card-head"><h2>Cálculo del premio</h2></div>
+            <div class="formula">
+                <div class="formula-item">
+                    <span class="formula-label">Pozo total</span>
+                    <strong th:text="|S/ ${#numbers.formatDecimal(premio.pozoTotal, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</strong>
+                    <small th:text="|${premio.jugadoresPagados} pagos confirmados|">0 pagos</small>
+                </div>
+                <span class="formula-op">−</span>
+                <div class="formula-item">
+                    <span class="formula-label" th:text="|Comisión (${premio.comisionPorcentaje}%)|">Comisión</span>
+                    <strong th:text="|S/ ${#numbers.formatDecimal(premio.comisionMonto, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</strong>
+                    <small>Se queda el organizador</small>
+                </div>
+                <span class="formula-op">=</span>
+                <div class="formula-item formula-result">
+                    <span class="formula-label">Premio ganador</span>
+                    <strong th:text="|S/ ${#numbers.formatDecimal(premio.premioGanador, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</strong>
+                    <small>Monto a pagar al equipo campeón</small>
+                </div>
+            </div>
+        </section>
+
+        <div class="two-col">
+            <section class="card">
+                <div class="card-head"><h2>Pagos pendientes</h2></div>
+                <p class="big-number" th:text="|S/ ${#numbers.formatDecimal(premio.montoPendiente, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</p>
+                <p class="muted" th:text="|${premio.jugadoresPendientes} jugadores aún no pagan.|">0 jugadores</p>
+                <p class="muted" th:if="${premio.montoPendiente.signum() > 0}"
+                   th:text="|Si todos pagan, el premio sería de S/ ${#numbers.formatDecimal(premio.premioProyectado, 1, 'COMMA', 2, 'POINT')}.|">Premio proyectado</p>
+                <a class="btn btn-ghost" th:href="@{/jugadores}">Ver jugadores</a>
+            </section>
+
+            <section class="card">
+                <div class="card-head"><h2>Equipo líder</h2></div>
+                <div th:if="${premio.lider != null}">
+                    <p class="big-number" th:text="${premio.lider.equipo}">Equipo</p>
+                    <p class="muted" th:text="|Capitán: ${premio.lider.capitan} · ${premio.lider.puntos} puntos · ${premio.lider.kills} kills|">Capitán</p>
+                </div>
+                <p class="muted" th:if="${premio.lider == null}">Todavía no hay puntos registrados. El líder aparecerá cuando se juegue la primera partida.</p>
+                <a class="btn btn-ghost" th:href="@{/partidas}">Ver tabla de posiciones</a>
+            </section>
+        </div>
+
+        <section class="card">
+            <div class="card-head"><h2>Configuración del torneo</h2></div>
+            <form id="formConfig" class="form" method="post" novalidate th:action="@{/premios/configuracion}">
+                <div class="form-grid form-grid-3">
+                    <div class="field">
+                        <label for="cfgNombre">Nombre del torneo</label>
+                        <input type="text" id="cfgNombre" name="nombreTorneo" maxlength="120" th:value="${config.nombreTorneo}" required>
+                    </div>
+                    <div class="field">
+                        <label for="cfgComision">Comisión (%)</label>
+                        <input type="number" id="cfgComision" name="comisionPorcentaje" min="0" max="100" step="0.01" th:value="${config.comisionPorcentaje}" required>
+                    </div>
+                    <div class="field">
+                        <label for="cfgCuota">Cuota de inscripción (S/)</label>
+                        <input type="number" id="cfgCuota" name="cuotaInscripcion" min="0" step="0.01" th:value="${config.cuotaInscripcion}" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Guardar configuración</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+<div th:replace="~{fragments/layout :: confirmar}"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

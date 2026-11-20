@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Partidas')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments/layout :: sidebar('partidas')}"></aside>
+
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Partidas</h1>
+                <p class="subtitle">Registra los puntos de cada partida y la tabla de posiciones se actualiza sola</p>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn btn-ghost" id="btnNuevaPartida">Nueva partida</button>
+                <button type="button" class="btn btn-primary" id="btnNuevoResultado">Registrar puntos</button>
+            </div>
+        </header>
+
+        <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+        <!-- Tabla de posiciones automática -->
+        <section class="card">
+            <div class="card-head">
+                <h2>Tabla de posiciones</h2>
+                <span class="muted">1.º 12 pts · 2.º 9 · 3.º 8 · 4.º 7 · 5.º 6 · 6.º 5 · 7.º 4 · 8.º 3 · 9.º 2 · 10.º 1, más 1 punto por kill</span>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                    <tr><th class="col-pos">Pos.</th><th>Equipo</th><th>Capitán</th><th class="num">Partidas</th><th class="num">Kills</th><th class="num">Puntos</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${posiciones}">
+                        <td><span class="pos" th:classappend="${p.posicion <= 3} ? ('pos-' + ${p.posicion})" th:text="${p.posicion}">1</span></td>
+                        <td class="strong" th:text="${p.equipo}">Equipo</td>
+                        <td th:text="${p.capitan}">Capitán</td>
+                        <td class="num" th:text="${p.partidasJugadas}">0</td>
+                        <td class="num" th:text="${p.kills}">0</td>
+                        <td class="num strong" th:text="${p.puntos}">0</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(posiciones)}">
+                        <td colspan="6" class="empty">Crea equipos para ver la clasificación.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Partidas jugadas -->
+        <section class="partida" th:each="pa : ${partidas}">
+            <div class="partida-head">
+                <div>
+                    <h2 th:text="${pa.nombre}">Partida 1</h2>
+                    <span class="muted" th:text="${#temporals.format(pa.fecha, 'dd/MM/yyyy') + (pa.mapa != null ? ' · ' + pa.mapa : '')}">01/01/2026</span>
+                </div>
+                <div class="partida-actions">
+                    <button type="button" class="btn btn-sm btn-ghost btn-resultado-partida" th:data-partida="${pa.id}">Registrar puntos</button>
+                    <!-- ===== ELIMINAR PARTIDA - ARREGLADO ===== -->
+                    <form class="inline" th:action="@{/partidas/{id}/eliminar(id=${pa.id})}" method="post"
+                          onsubmit="return confirm('¿Eliminar ' + this.dataset.nombre + '? Se borrarán sus resultados y se recalcularán los puntos.')"
+                          th:data-nombre="${pa.nombre}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-sm btn-danger-ghost">Eliminar partida</button>
+                    </form>
+                </div>
+            </div>
+            <div class="table-wrap" th:if="${!#lists.isEmpty(pa.resultados)}">
+                <table class="table table-compact">
+                    <thead>
+                    <tr><th class="col-pos">Pos.</th><th>Equipo</th><th class="num">Kills</th><th class="num">Puntos</th><th class="col-actions"></th></tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="r : ${pa.resultados}">
+                        <td><span class="pos" th:classappend="${r.posicion <= 3} ? ('pos-' + ${r.posicion})" th:text="${r.posicion}">1</span></td>
+                        <td class="strong" th:text="${r.equipo.nombre}">Equipo</td>
+                        <td class="num" th:text="${r.kills}">0</td>
+                        <td class="num strong" th:text="${r.puntos}">0</td>
+                        <td class="col-actions">
+                            <!-- ===== QUITAR RESULTADO - ARREGLADO ===== -->
+                            <form class="inline" th:action="@{/partidas/resultados/{id}/eliminar(id=${r.id})}" method="post"
+                                  onsubmit="return confirm('¿Quitar el resultado de ' + this.dataset.equipo + ' en ' + this.dataset.partida + '?')"
+                                  th:data-equipo="${r.equipo.nombre}" th:data-partida="${pa.nombre}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="btn btn-sm btn-danger-ghost">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="empty" th:if="${#lists.isEmpty(pa.resultados)}">Esta partida todavía no tiene puntos registrados.</p>
+        </section>
+
+        <p class="empty card" th:if="${#lists.isEmpty(partidas)}">No hay partidas. Usa «Nueva partida» para empezar.</p>
+    </main>
+</div>
+
+<!-- ===== Modal: nueva partida ===== -->
+<div class="modal" id="modalPartida" aria-hidden="true">
+    <div class="modal-box modal-sm" role="dialog" aria-modal="true" aria-labelledby="tituloModalPartida">
+        <h2 id="tituloModalPartida">Nueva partida</h2>
+        <form id="formPartida" class="form" method="post" novalidate th:action="@{/partidas/guardar(_csrf=${_csrf.token})}">
+            <div class="field">
+                <label for="partidaNombre">Nombre de la partida</label>
+                <input type="text" id="partidaNombre" name="nombre" maxlength="100" placeholder="Ej. Partida 1" required>
+            </div>
+            <div class="field">
+                <label for="partidaFecha">Fecha</label>
+                <input type="date" id="partidaFecha" name="fecha" th:value="${hoy}" required>
+            </div>
+            <div class="field">
+                <label for="partidaMapa">Mapa</label>
+                <select id="partidaMapa" name="mapa">
+                    <option value="">Sin definir</option>
+                    <option th:each="m : ${mapas}" th:value="${m}" th:text="${m}">Bermuda</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Crear partida</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== Modal: registrar puntos ===== -->
+<div class="modal" id="modalResultado" aria-hidden="true">
+    <div class="modal-box modal-sm" role="dialog" aria-modal="true" aria-labelledby="tituloModalResultado">
+        <h2 id="tituloModalResultado">Registrar puntos</h2>
+        <form id="formResultado" class="form" method="post" novalidate th:action="@{/partidas/resultados/guardar(_csrf=${_csrf.token})}">
+            <div class="field">
+                <label for="resultadoPartida">Partida</label>
+                <select id="resultadoPartida" name="partidaId" required>
+                    <option value="">Elige la partida</option>
+                    <option th:each="pa : ${partidas}" th:value="${pa.id}" th:text="${pa.nombre}">Partida</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="resultadoEquipo">Equipo</label>
+                <select id="resultadoEquipo" name="equipoId" required>
+                    <option value="">Elige el equipo</option>
+                    <option th:each="e : ${equipos}" th:value="${e.id}" th:text="${e.nombre}">Equipo</option>
+                </select>
+            </div>
+            <div class="form-grid">
+                <div class="field">
+                    <label for="resultadoPosicion">Posición (1 a 12)</label>
+                    <input type="number" id="resultadoPosicion" name="posicion" min="1" max="12" required>
+                </div>
+                <div class="field">
+                    <label for="resultadoKills">Kills</label>
+                    <input type="number" id="resultadoKills" name="kills" min="0" max="99" value="0" required>
+                </div>
+            </div>
+            <p class="preview">Puntos que sumará: <strong id="previewPuntos">—</strong></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar puntos</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: confirmar}"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Equipos')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments/layout :: sidebar('equipos')}"></aside>
+
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Equipos</h1>
+                <p class="subtitle">Cada equipo tiene un capitán y hasta 4 jugadores</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnNuevoEquipo">Nuevo equipo</button>
+        </header>
+
+        <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+        <section class="card">
+            <div class="toolbar">
+                <input type="search" id="buscador" data-tabla="tablaEquipos"
+                       placeholder="Buscar por equipo, capitán o jugador" aria-label="Buscar equipos">
+            </div>
+
+            <div class="table-wrap">
+                <table class="table" id="tablaEquipos">
+                    <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>Capitán</th>
+                        <th>Jugadores</th>
+                        <th class="num">Plantel</th>
+                        <th class="num">Kills</th>
+                        <th class="num">Puntos totales</th>
+                        <th class="col-actions">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="e : ${equipos}" data-filtrable>
+                        <td class="strong" th:text="${e.nombre}">Equipo</td>
+                        <td th:text="${e.capitan != null} ? ${e.capitan.nombre} : 'Sin capitán'">Capitán</td>
+                        <td>
+                            <span class="chip" th:each="i : ${e.integrantes}" th:text="${i.nombre}">Jugador</span>
+                            <span class="muted" th:if="${#lists.isEmpty(e.integrantes)}">—</span>
+                        </td>
+                        <td class="num">
+                            <span class="badge" th:classappend="${e.numeroJugadores == 5} ? 'badge-ok' : 'badge-warn'"
+                                  th:text="|${e.numeroJugadores}/5|">0/5</span>
+                        </td>
+                        <td class="num" th:text="${e.totalKills}">0</td>
+                        <td class="num strong" th:text="${e.puntosTotales}">0</td>
+                        <td class="col-actions">
+                            <button type="button" class="btn btn-sm btn-ghost btn-editar-equipo"
+                                    th:data-id="${e.id}"
+                                    th:data-nombre="${e.nombre}"
+                                    th:data-capitan="${e.capitan != null} ? ${e.capitan.id}"
+                                    th:data-integrantes="${#strings.listJoin(e.integrantes.![id], ',')}">Editar</button>
+
+                            <!-- ===== ELIMINAR - ARREGLADO CON CSRF + CONFIRM ===== -->
+                            <form class="inline" th:action="@{/equipos/{id}/eliminar(id=${e.id})}" method="post"
+                                  onsubmit="return confirm('¿Eliminar el equipo ' + this.dataset.nombre + '? Sus jugadores quedarán sin equipo y se borrarán sus resultados.')"
+                                  th:data-nombre="${e.nombre}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="btn btn-sm btn-danger-ghost">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(equipos)}">
+                        <td colspan="7" class="empty">No hay equipos todavía. Registra primero a los jugadores y luego crea el equipo.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="empty" id="sinResultados" hidden>Ningún equipo coincide con la búsqueda.</p>
+        </section>
+    </main>
+</div>
+
+<!-- ===== Modal: crear / editar equipo ===== -->
+<div class="modal" id="modalEquipo" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloModalEquipo">
+        <h2 id="tituloModalEquipo">Nuevo equipo</h2>
+        <form id="formEquipo" class="form" method="post" novalidate th:action="@{/equipos/guardar(_csrf=${_csrf.token})}">
+            <input type="hidden" name="id" id="equipoId">
+
+            <div class="field">
+                <label for="equipoNombre">Nombre del equipo</label>
+                <input type="text" id="equipoNombre" name="nombre" maxlength="80" required>
+            </div>
+
+            <div class="field">
+                <label for="equipoCapitan">Capitán</label>
+                <select id="equipoCapitan" name="capitanId" required>
+                    <option value="">Elige al capitán</option>
+                    <option th:each="j : ${jugadores}" th:value="${j.id}" th:data-equipo="${j.equipo != null} ? ${j.equipo.id}"
+                            th:text="${j.equipo != null} ? |${j.nombre} (${j.equipo.nombre})| : ${j.nombre}">Jugador</option>
+                </select>
+            </div>
+
+            <fieldset class="field">
+                <legend>Jugadores del equipo <span class="counter" id="contadorIntegrantes">0/4</span></legend>
+                <div class="check-list">
+                    <label class="check" th:each="j : ${jugadores}" th:data-equipo="${j.equipo != null} ? ${j.equipo.id}">
+                        <input type="checkbox" name="integrantesIds" th:value="${j.id}" th:data-equipo="${j.equipo != null} ? ${j.equipo.id}">
+                        <span th:text="${j.equipo != null} ? |${j.nombre} (${j.equipo.nombre})| : ${j.nombre}">Jugador</span>
+                    </label>
+                    <p class="empty" th:if="${#lists.isEmpty(jugadores)}">Primero registra jugadores en la sección Jugadores.</p>
+                </div>
+                <small class="hint">Los jugadores que ya están en otro equipo aparecen deshabilitados.</small>
+            </fieldset>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar equipo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: confirmar}"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

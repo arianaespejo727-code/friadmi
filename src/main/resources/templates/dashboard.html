@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<head>
+<meta charset="UTF-8">
+<style>
+  /* ===== DASHBOARD DORADO FRIIADMI ===== */
+  body { background: #000 !important; color: #fff !important; font-family: Arial, sans-serif; }
+  .app { display: flex !important; min-height: 100vh !important; background: #000 !important; }
+  .content { flex: 1 !important; padding: 28px !important; background: #000 !important; }
+
+  .page-header { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 22px !important; flex-wrap: wrap !important; gap: 12px !important; }
+  .page-header h1 { color: #facc15 !important; font-size: 30px !important; text-shadow: 0 0 15px rgba(250,204,21,.8) !important; margin: 0 !important; }
+  .subtitle { color: #fef3c7 !important; margin: 4px 0 0 !important; font-size: 14px !important; }
+
+  .btn, .btn-primary {
+    background: linear-gradient(90deg,#facc15,#f97316,#facc15) !important;
+    background-size: 200% auto !important;
+    color: #000 !important; font-weight: 900 !important;
+    padding: 11px 18px !important; border-radius: 12px !important;
+    text-decoration: none !important; border: none !important;
+    box-shadow: 0 0 20px rgba(250,204,21,.7) !important; display: inline-block !important;
+  }
+  .btn:hover { transform: scale(1.03); }
+
+  /* PREMIO - LA CAJA GRANDE */
+  .prize-hero {
+    background: linear-gradient(160deg,#1a1200,#2b1d00,#000) !important;
+    border: 2px solid #facc15 !important; border-radius: 18px !important;
+    padding: 22px !important; display: flex !important; justify-content: space-between !important; gap: 20px !important; flex-wrap: wrap !important;
+    box-shadow: 0 0 25px rgba(250,204,21,.4) !important; margin-bottom: 22px !important;
+  }
+  .prize-label { display: block !important; color: #fde68a !important; font-size: 13px !important; font-weight: 700 !important; }
+  .prize-amount { font-size: 38px !important; color: #facc15 !important; text-shadow: 0 0 18px rgba(250,204,21,.9) !important; }
+  .prize-calc { display: flex !important; gap: 28px !important; margin: 0 !important; }
+  .prize-calc dt { color: #fef3c7 !important; font-size: 12px !important; }
+  .prize-calc dd { color: #fff !important; font-weight: 800 !important; font-size: 16px !important; margin: 4px 0 0 !important; }
+
+  /* STATS - 4 CAJITAS CHICAS */
+  .stats-grid { display: grid !important; grid-template-columns: repeat(4,1fr) !important; gap: 16px !important; margin-bottom: 22px !important; }
+  .stat {
+    background: #0a0a0a !important; border: 1.5px solid #facc15 !important; border-radius: 14px !important;
+    padding: 16px !important; box-shadow: 0 0 15px rgba(250,204,21,.3) !important;
+  }
+  .stat-label { color: #fde68a !important; font-size: 12px !important; font-weight: 700 !important; display: block !important; }
+  .stat-value { color: #fff !important; font-size: 26px !important; display: block !important; margin: 6px 0 !important; }
+  .stat-note { color: #a1a1aa !important; font-size: 12px !important; }
+  .stat-warn { border-color: #f97316 !important; }
+  .stat-warn .stat-value { color: #fb923c !important; }
+
+  /* TABLA */
+  .card { background: #0a0a0a !important; border: 1.5px solid #facc15 !important; border-radius: 16px !important; padding: 18px !important; box-shadow: 0 0 18px rgba(250,204,21,.3) !important; }
+  .card-head { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 12px !important; }
+  .card-head h2 { color: #facc15 !important; font-size: 18px !important; margin: 0 !important; }
+  .link, .card-head a { color: #facc15 !important; font-weight: 700 !important; text-decoration: none !important; }
+  .table { width: 100% !important; border-collapse: collapse !important; color: #fff !important; }
+  .table th { color: #fde68a !important; text-align: left !important; padding: 10px !important; border-bottom: 1px solid #facc15 !important; font-size: 13px !important; }
+  .table td { padding: 10px !important; border-bottom: 1px solid #333 !important; font-size: 14px !important; }
+  .table .num { text-align: right !important; }
+  .pos { display: inline-flex !important; width: 28px !important; height: 28px !important; align-items: center !important; justify-content: center !important; border-radius: 50% !important; background: #333 !important; color: #fff !important; font-weight: 800 !important; }
+  .pos-1 { background: #facc15 !important; color: #000 !important; box-shadow: 0 0 12px rgba(250,204,21,.8) !important; }
+  .pos-2 { background: #e5e7eb !important; color: #000 !important; }
+  .pos-3 { background: #f97316 !important; color: #000 !important; }
+  .empty { color: #a1a1aa !important; text-align: center !important; padding: 20px !important; }
+
+  @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2,1fr) !important; } }
+  @media (max-width: 500px) { .stats-grid { grid-template-columns: 1fr !important; } .content { padding: 14px !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
+
+    <main class="content">
+        <header class="page-header">
+            <div>
+                <h1>Dashboard</h1>
+                <p class="subtitle">Estado actual del torneo</p>
+            </div>
+            <a class="btn btn-primary" th:href="@{/jugadores}">Registrar jugador</a>
+        </header>
+
+        <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+        <section class="prize-hero">
+            <div class="prize-main">
+                <span class="prize-label">Premio a pagar al equipo ganador</span>
+                <strong class="prize-amount" th:text="|S/ ${#numbers.formatDecimal(dashboard.premioAPagar, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</strong>
+            </div>
+            <dl class="prize-calc">
+                <div>
+                    <dt>Pozo total</dt>
+                    <dd th:text="|S/ ${#numbers.formatDecimal(dashboard.totalRecaudado, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</dd>
+                </div>
+                <div>
+                    <dt th:text="|Comisión (${dashboard.comisionPorcentaje}%)|">Comisión</dt>
+                    <dd th:text="|− S/ ${#numbers.formatDecimal(dashboard.comisionMonto, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat">
+                <span class="stat-label">Total recaudado</span>
+                <strong class="stat-value" th:text="|S/ ${#numbers.formatDecimal(dashboard.totalRecaudado, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</strong>
+                <span class="stat-note">Solo pagos confirmados</span>
+            </article>
+            <article class="stat">
+                <span class="stat-label">Jugadores</span>
+                <strong class="stat-value" th:text="${dashboard.totalJugadores}">0</strong>
+                <span class="stat-note">Inscritos en el torneo</span>
+            </article>
+            <article class="stat">
+                <span class="stat-label">Equipos</span>
+                <strong class="stat-value" th:text="${dashboard.totalEquipos}">0</strong>
+                <span class="stat-note" th:text="|${dashboard.totalPartidas} partidas jugadas|">0 partidas</span>
+            </article>
+            <article class="stat stat-warn">
+                <span class="stat-label">Pendientes de pago</span>
+                <strong class="stat-value" th:text="${dashboard.jugadoresPendientes}">0</strong>
+                <span class="stat-note" th:text="|S/ ${#numbers.formatDecimal(dashboard.montoPendiente, 1, 'COMMA', 2, 'POINT')} por cobrar|">S/ 0.00</span>
+            </article>
+        </section>
+
+        <section class="card">
+            <div class="card-head">
+                <h2>Mejores equipos</h2>
+                <a class="link" th:href="@{/partidas}">Ver tabla completa</a>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                    <tr><th class="col-pos">Pos.</th><th>Equipo</th><th>Capitán</th><th class="num">Kills</th><th class="num">Puntos</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${dashboard.top}">
+                        <td><span class="pos" th:classappend="${p.posicion <= 3} ? ('pos-' + ${p.posicion})" th:text="${p.posicion}">1</span></td>
+                        <td class="strong" th:text="${p.equipo}">Equipo</td>
+                        <td th:text="${p.capitan}">Capitán</td>
+                        <td class="num" th:text="${p.kills}">0</td>
+                        <td class="num strong" th:text="${p.puntos}">0</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(dashboard.top)}">
+                        <td colspan="5" class="empty">Aún no hay equipos. Crea el primero en la sección Equipos.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+<div th:replace="~{fragments/layout :: confirmar}"></div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

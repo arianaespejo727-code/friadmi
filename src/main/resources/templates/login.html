@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Acceso - FRIIADMI</title>
+<link rel="icon" type="image/x-icon" href="/img/icon.ico?v=99">
+<link rel="shortcut icon" type="image/x-icon" href="/img/icon.ico?v=99">
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #000; overflow: hidden; }
+    .wrap { display: flex; height: 100vh; width: 100vw; }
+
+    /* IZQUIERDA - IMAGEN MAS GRANDE Y VISIBLE */
+    .izquierda {
+      width: 62%; background: #000;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; padding: 30px;
+    }
+    .izquierda img {
+      width: 100%; max-width: 680px;
+      height: 520px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      border-radius: 20px;
+      border: 2px solid #facc15;
+      box-shadow: 0 0 40px rgba(250,204,21,.45), 0 0 80px rgba(249,115,22,.25);
+    }
+
+    /* DERECHA - FONDO DORADO GRANDE */
+    .derecha {
+      width: 38%;
+      background: linear-gradient(160deg, #1a1200 0%, #2b1d00 45%, #000000 100%);
+      border: 2px solid #facc15;
+      border-radius: 22px;
+      box-shadow: 0 0 25px rgba(250,204,21,0.45), 0 0 60px rgba(249,115,22,0.35);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 20px;
+      margin: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .derecha::before {
+      content: "";
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(120deg, transparent 40%, rgba(250,204,21,0.25) 50%, transparent 60%);
+      animation: brillo 3s linear infinite;
+      pointer-events: none;
+    }
+    .derecha h2 {
+      align-self: flex-start;
+      font-size: 22px; margin-bottom: 6px; margin-left: 30px;
+      color: #facc15;
+      text-shadow: 0 0 15px rgba(250,204,21,0.9);
+      position: relative;
+    }
+    .derecha > p { align-self: flex-start; color: #fef3c7; margin-bottom: 18px; margin-left: 30px; font-size: 12px; position: relative; }
+
+    /* VENTANITA PEQUEÑA DEL LOGIN */
+    .login-box {
+      width: 100%; max-width: 290px;
+      background: #0a0a0a;
+      border: 1.5px solid #facc15;
+      border-radius: 14px;
+      padding: 20px 18px;
+      box-shadow: 0 0 20px rgba(250,204,21,.5);
+      position: relative;
+      animation: flotar 3.5s ease-in-out infinite;
+    }
+    .login-box label { display: block; font-weight: bold; margin: 12px 0 5px; font-size: 12px; color: #fde68a; }
+    .login-box input {
+      width: 100%; padding: 10px;
+      background: #fff; border: 1.5px solid #facc15; color: #000;
+      border-radius: 8px; font-size: 14px; outline: none;
+    }
+    .login-box input:focus { box-shadow: 0 0 0 3px rgba(250,204,21,0.35), 0 0 15px rgba(250,204,21,0.7); }
+    .login-box button {
+      width: 100%; margin-top: 18px; padding: 11px;
+      background: linear-gradient(90deg, #facc15, #f97316, #facc15);
+      background-size: 200% auto;
+      color: #000; border: none; border-radius: 8px;
+      font-weight: 900; font-size: 15px; cursor: pointer;
+      box-shadow: 0 0 18px rgba(250,204,21,0.8);
+      animation: botonDor 2s linear infinite;
+    }
+    .login-box button:hover { transform: scale(1.03); }
+    .error { background: #ffe4e4; color: #b91c1c; padding: 10px; border-radius: 8px; font-size: 12px; margin-bottom: 10px; position: relative; width: 100%; max-width: 290px; }
+
+    @keyframes flotar { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes brillo { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+    @keyframes botonDor { 0%{background-position:0% center} 100%{background-position:200% center} }
+
+    @media (max-width: 800px) {
+      body { overflow: auto; }
+      .wrap { flex-direction: column; height: auto; }
+      .izquierda, .derecha { width: 100%; margin: 0; border-radius: 0; }
+      .izquierda img { height: 260px; }
+      .derecha h2, .derecha > p { margin-left: 0; align-self: center; }
+    }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="izquierda">
+    <img src="/img/LOGO.jpg?v=99" alt="FRIIADMI">
+  </section>
+  <section class="derecha">
+    <h2>Ingresar al panel</h2>
+    <p>Acceso exclusivo para el administrador.</p>
+    <div class="error" th:if="${param.error}">Usuario o contraseña incorrectos.</div>
+    <div class="login-box">
+      <form th:action="@{/login}" method="post">
+        <label>Usuario</label>
+        <input type="text" name="username" required autofocus>
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+        <button type="submit">Ingresar</button>
+      </form>
+    </div>
+  </section>
+</main>
+</body>
+</html>

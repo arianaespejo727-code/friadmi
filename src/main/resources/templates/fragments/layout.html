@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title th:text="${titulo} + ' - FRIIADMI'">FRIIADMI</title>
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="icon" type="image/x-icon" href="/img/icon.ico?v=99">
+<link rel="shortcut icon" type="image/x-icon" href="/img/icon.ico?v=99">
+</head>
+
+<aside class="sidebar" th:fragment="sidebar(activo)">
+  <a class="brand" th:href="@{/dashboard}"><span>F</span> FRIIADMI</a>
+  <nav>
+    <a th:href="@{/dashboard}" th:classappend="${activo=='dashboard'} ? 'active'">📊 Dashboard</a>
+    <a th:href="@{/jugadores}" th:classappend="${activo=='jugadores'} ? 'active'">👤 Jugadores</a>
+    <a th:href="@{/equipos}" th:classappend="${activo=='equipos'} ? 'active'">👥 Equipos</a>
+    <a th:href="@{/partidas}" th:classappend="${activo=='partidas'} ? 'active'">🎮 Partidas</a>
+   <a th:href="@{/premios}" th:classappend="${activo=='premios'} ? 'active'">🏆 Premios</a>
+  <div class="logout">
+    <form th:action="@{/logout}" method="post"><button type="submit">Cerrar sesión</button></form>
+  </div>
+</aside>
+
+<div th:fragment="mensajes">
+  <div th:if="${param.exito}" style="background:#14532d;color:#dcfce7;padding:12px;border-radius:10px;margin-bottom:16px;">¡Guardado con éxito! ✅</div>
+  <div th:if="${param.error}" style="background:#7f1d1d;color:#fecaca;padding:12px;border-radius:10px;margin-bottom:16px;">Ocurrió un error.</div>
+</div>
+
+<div th:fragment="confirmar"></div>
+</html>
