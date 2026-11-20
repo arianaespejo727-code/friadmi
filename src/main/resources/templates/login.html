@@ -2,16 +2,16 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Acceso - FRIIADMI</title>
 <link rel="icon" type="image/x-icon" href="/img/icon.ico?v=99">
 <link rel="shortcut icon" type="image/x-icon" href="/img/icon.ico?v=99">
 <link rel="stylesheet" href="/css/styles.css">
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { background: #000; overflow: hidden; }
-    .wrap { display: flex; height: 100vh; width: 100vw; }
+    body { background: #000; min-height:100vh; }
+    .wrap { display: flex; min-height: 100vh; width: 100%; }
 
-    /* IZQUIERDA - IMAGEN MAS GRANDE Y VISIBLE */
     .izquierda {
       width: 62%; background: #000;
       display: flex; align-items: center; justify-content: center;
@@ -28,7 +28,6 @@
       box-shadow: 0 0 40px rgba(250,204,21,.45), 0 0 80px rgba(249,115,22,.25);
     }
 
-    /* DERECHA - FONDO DORADO GRANDE */
     .derecha {
       width: 38%;
       background: linear-gradient(160deg, #1a1200 0%, #2b1d00 45%, #000000 100%);
@@ -58,7 +57,6 @@
     }
     .derecha > p { align-self: flex-start; color: #fef3c7; margin-bottom: 18px; margin-left: 30px; font-size: 12px; position: relative; }
 
-    /* VENTANITA PEQUEÑA DEL LOGIN */
     .login-box {
       width: 100%; max-width: 290px;
       background: #0a0a0a;
@@ -71,17 +69,17 @@
     }
     .login-box label { display: block; font-weight: bold; margin: 12px 0 5px; font-size: 12px; color: #fde68a; }
     .login-box input {
-      width: 100%; padding: 10px;
+      width: 100%; padding: 12px;
       background: #fff; border: 1.5px solid #facc15; color: #000;
-      border-radius: 8px; font-size: 14px; outline: none;
+      border-radius: 8px; font-size: 16px; outline: none;
     }
     .login-box input:focus { box-shadow: 0 0 0 3px rgba(250,204,21,0.35), 0 0 15px rgba(250,204,21,0.7); }
     .login-box button {
-      width: 100%; margin-top: 18px; padding: 11px;
+      width: 100%; margin-top: 18px; padding: 13px;
       background: linear-gradient(90deg, #facc15, #f97316, #facc15);
       background-size: 200% auto;
       color: #000; border: none; border-radius: 8px;
-      font-weight: 900; font-size: 15px; cursor: pointer;
+      font-weight: 900; font-size: 16px; cursor: pointer;
       box-shadow: 0 0 18px rgba(250,204,21,0.8);
       animation: botonDor 2s linear infinite;
     }
@@ -92,12 +90,24 @@
     @keyframes brillo { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
     @keyframes botonDor { 0%{background-position:0% center} 100%{background-position:200% center} }
 
+    /* ===== CELULAR ===== */
     @media (max-width: 800px) {
       body { overflow: auto; }
-      .wrap { flex-direction: column; height: auto; }
-      .izquierda, .derecha { width: 100%; margin: 0; border-radius: 0; }
-      .izquierda img { height: 260px; }
-      .derecha h2, .derecha > p { margin-left: 0; align-self: center; }
+      .wrap { flex-direction: column; height: auto; min-height:100vh; }
+      .izquierda{ width:100%; padding:14px 14px 0; }
+      .izquierda img{ height:190px; border-radius:14px; }
+      .derecha{
+        width:auto; margin:14px; border-radius:18px;
+        padding:22px 16px 28px; justify-content:flex-start;
+      }
+      .derecha h2, .derecha > p{ margin-left:0; align-self:center; text-align:center; }
+      .derecha h2{ font-size:24px; }
+      .derecha > p{ font-size:13px; }
+      .login-box, .error{ max-width:100%; }
+      .login-box{ animation:none; padding:20px 16px; }
+    }
+    @media (max-width: 380px){
+      .izquierda img{ height:150px; }
     }
 </style>
 </head>
@@ -113,9 +123,9 @@
     <div class="login-box">
       <form th:action="@{/login}" method="post">
         <label>Usuario</label>
-        <input type="text" name="username" required autofocus>
+        <input type="text" name="username" required autofocus autocomplete="username">
         <label>Contraseña</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required autocomplete="current-password">
         <button type="submit">Ingresar</button>
       </form>
     </div>
