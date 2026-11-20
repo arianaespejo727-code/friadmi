@@ -1,7 +1,46 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Jugadores')}"></head>
+<head>
+<meta charset="UTF-8">
+<style>
+  body{ margin:0 !important; }
+  .app{ display:flex !important; min-height:100vh !important; }
+  .content{ flex:1 !important; min-width:0 !important; }
+  .page-header{ display:flex !important; justify-content:space-between !important; align-items:center !important; flex-wrap:wrap !important; gap:12px !important; }
+  .mini-stats{ display:flex !important; gap:12px !important; flex-wrap:wrap !important; }
+  .mini-stats > div{ flex:1 !important; min-width:100px !important; }
+  .toolbar{ display:flex !important; gap:10px !important; flex-wrap:wrap !important; }
+  .toolbar input, .toolbar select{ flex:1 !important; min-width:160px !important; box-sizing:border-box !important; }
+  .table-wrap{ overflow-x:auto !important; -webkit-overflow-scrolling:touch !important; }
+  .table{ min-width:820px !important; }
+  .col-actions{ white-space:nowrap !important; }
+  .modal-box{ width:95% !important; max-width:620px !important; box-sizing:border-box !important; max-height:90vh !important; overflow-y:auto !important; }
+  .form-grid{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:12px !important; }
+  .field-wide{ grid-column:1 / -1 !important; }
+  .field input, .field select{ width:100% !important; box-sizing:border-box !important; }
+
+  @media (max-width: 768px){
+    .app{ flex-direction:column !important; }
+    .content{ padding:14px !important; width:100% !important; }
+    .page-header h1{ font-size:24px !important; }
+    .page-header .btn-primary{ width:100% !important; text-align:center !important; }
+    .mini-stats{ gap:8px !important; }
+    .mini-stats > div{ min-width:0 !important; }
+    .toolbar{ flex-direction:column !important; }
+    .toolbar input, .toolbar select{ width:100% !important; }
+    .card{ padding:12px !important; }
+    .col-actions .btn, .col-actions form{ display:block !important; width:100% !important; margin-bottom:6px !important; text-align:center !important; box-sizing:border-box !important; }
+    .modal{ padding:10px !important; align-items:flex-start !important; }
+    .modal-box{ margin-top:20px !important; padding:16px !important; }
+    .form-grid{ grid-template-columns:1fr !important; }
+    .modal-actions{ flex-direction:column-reverse !important; }
+    .modal-actions .btn{ width:100% !important; text-align:center !important; }
+  }
+</style>
+</head>
 <body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
 <div class="app">
     <aside th:replace="~{fragments/layout :: sidebar('jugadores')}"></aside>
 
@@ -90,14 +129,12 @@
                                     th:data-foto="${j.fotoPerfil}"
                                     th:data-comprobante="${j.comprobante != null}">Editar</button>
 
-                            <!-- ===== MARCAR PAGADO - ARREGLADO CON CSRF ===== -->
                             <form th:if="${j.estadoPago.name() == 'PENDIENTE'}" class="inline"
                                   th:action="@{/jugadores/{id}/pagar(id=${j.id})}" method="post">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                 <button type="submit" class="btn btn-sm btn-ok">Marcar pagado</button>
                             </form>
 
-                            <!-- ===== ELIMINAR - ARREGLADO CON CSRF + CONFIRM ===== -->
                             <form class="inline" th:action="@{/jugadores/{id}/eliminar(id=${j.id})}" method="post"
                                   onsubmit="return confirm('¿Eliminar a ' + this.dataset.nombre + '? Esta acción no se puede deshacer.')"
                                   th:data-nombre="${j.nombre}">
@@ -117,7 +154,6 @@
     </main>
 </div>
 
-<!-- ===== Modal: crear / editar jugador ===== -->
 <div class="modal" id="modalJugador" aria-hidden="true">
     <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloModalJugador">
         <h2 id="tituloModalJugador">Nuevo jugador</h2>
@@ -207,6 +243,7 @@
 </div>
 
 <div th:replace="~{fragments/layout :: confirmar}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
 <script>
 function verFotoPerfil(ruta){
   let img = document.getElementById('vistaFotoPerfil');
