@@ -1,7 +1,39 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Pagos y premios')}"></head>
+<head>
+<meta charset="UTF-8">
+<style>
+  body{ margin:0 !important; }
+  .app{ display:flex !important; min-height:100vh !important; }
+  .content{ flex:1 !important; min-width:0 !important; }
+  .page-header{ display:flex !important; justify-content:space-between !important; align-items:center !important; flex-wrap:wrap !important; gap:12px !important; }
+  .formula{ display:flex !important; align-items:center !important; justify-content:center !important; gap:16px !important; flex-wrap:wrap !important; text-align:center !important; }
+  .formula-item{ flex:1 !important; min-width:160px !important; }
+  .formula-op{ font-size:28px !important; font-weight:900 !important; }
+  .two-col{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:16px !important; margin:16px 0 !important; }
+  .form-grid-3{ display:grid !important; grid-template-columns:repeat(3,1fr) !important; gap:12px !important; }
+  .field input{ width:100% !important; box-sizing:border-box !important; }
+  .big-number{ font-size:26px !important; word-break:break-word !important; }
+
+  @media (max-width: 768px){
+    .app{ flex-direction:column !important; }
+    .content{ padding:14px !important; width:100% !important; }
+    .page-header h1{ font-size:24px !important; }
+    .card{ padding:14px !important; }
+    .formula{ flex-direction:column !important; gap:6px !important; }
+    .formula-item{ width:100% !important; min-width:0 !important; padding:10px !important; }
+    .formula-op{ transform:rotate(90deg) !important; font-size:22px !important; margin:2px 0 !important; }
+    .two-col{ grid-template-columns:1fr !important; gap:12px !important; }
+    .two-col .btn{ width:100% !important; text-align:center !important; box-sizing:border-box !important; }
+    .form-grid-3{ grid-template-columns:1fr !important; }
+    .modal-actions .btn{ width:100% !important; text-align:center !important; }
+    .big-number{ font-size:22px !important; }
+  }
+</style>
+</head>
 <body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
 <div class="app">
     <aside th:replace="~{fragments/layout :: sidebar('premios')}"></aside>
 
@@ -15,7 +47,6 @@
 
         <div th:replace="~{fragments/layout :: mensajes}"></div>
 
-        <!-- Cálculo: Pozo total - Comisión = Premio ganador -->
         <section class="card">
             <div class="card-head"><h2>Cálculo del premio</h2></div>
             <div class="formula">
@@ -85,6 +116,7 @@
     </main>
 </div>
 <div th:replace="~{fragments/layout :: confirmar}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
 <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
