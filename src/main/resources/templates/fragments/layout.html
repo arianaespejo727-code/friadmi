@@ -7,16 +7,60 @@
 <link rel="stylesheet" href="/css/styles.css">
 <link rel="icon" type="image/x-icon" href="/img/icon.ico?v=99">
 <link rel="shortcut icon" type="image/x-icon" href="/img/icon.ico?v=99">
+<style>
+  /* BOTON HAMBURGUESA */
+  .menu-btn{
+    display:none; font-size:26px; background:#0f172a; color:white;
+    border:none; border-radius:8px; padding:8px 12px; cursor:pointer;
+  }
+  .topbar-mobile{
+    display:none; align-items:center; gap:10px;
+    padding:10px 14px; background:white; position:sticky; top:0; z-index:900;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  .sidebar-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:950;
+  }
+  .sidebar-overlay.show{ display:block; }
+
+  @media (max-width: 768px){
+    .menu-btn{ display:block; }
+    .topbar-mobile{ display:flex; }
+    .sidebar{
+      position:fixed !important; left:-280px !important; top:0 !important;
+      width:260px !important; height:100vh !important; z-index:1000 !important;
+      transition:left .3s ease; box-shadow:5px 0 20px rgba(0,0,0,.3);
+    }
+    .sidebar.open{ left:0 !important; }
+    /* que el contenido ocupe todo */
+    body, .main, main, .content, .container{
+      margin-left:0 !important; width:100% !important; max-width:100% !important;
+    }
+    .main, main, .content{ padding:14px !important; }
+    /* tablas con scroll */
+    table{ display:block; overflow-x:auto; white-space:nowrap; }
+    /* tarjetas en 1 columna */
+    .stats, .cards, .grid{ grid-template-columns:1fr !important; }
+  }
+</style>
 </head>
 
-<aside class="sidebar" th:fragment="sidebar(activo)">
+<!-- BARRA SUPERIOR SOLO EN CELU -->
+<div class="topbar-mobile" th:fragment="topbar">
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <b>FRIIADMI</b>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar" th:fragment="sidebar(activo)">
   <a class="brand" th:href="@{/dashboard}"><span>F</span> FRIIADMI</a>
   <nav>
     <a th:href="@{/dashboard}" th:classappend="${activo=='dashboard'} ? 'active'">📊 Dashboard</a>
     <a th:href="@{/jugadores}" th:classappend="${activo=='jugadores'} ? 'active'">👤 Jugadores</a>
     <a th:href="@{/equipos}" th:classappend="${activo=='equipos'} ? 'active'">👥 Equipos</a>
     <a th:href="@{/partidas}" th:classappend="${activo=='partidas'} ? 'active'">🎮 Partidas</a>
-   <a th:href="@{/premios}" th:classappend="${activo=='premios'} ? 'active'">🏆 Premios</a>
+    <a th:href="@{/premios}" th:classappend="${activo=='premios'} ? 'active'">🏆 Premios</a>
+  </nav>
   <div class="logout">
     <form th:action="@{/logout}" method="post"><button type="submit">Cerrar sesión</button></form>
   </div>
@@ -26,6 +70,13 @@
   <div th:if="${param.exito}" style="background:#14532d;color:#dcfce7;padding:12px;border-radius:10px;margin-bottom:16px;">¡Guardado con éxito! ✅</div>
   <div th:if="${param.error}" style="background:#7f1d1d;color:#fecaca;padding:12px;border-radius:10px;margin-bottom:16px;">Ocurrió un error.</div>
 </div>
+
+<script th:fragment="scripts">
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+</script>
 
 <div th:fragment="confirmar"></div>
 </html>
