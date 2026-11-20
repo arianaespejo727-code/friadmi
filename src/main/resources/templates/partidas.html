@@ -1,7 +1,52 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Partidas')}"></head>
+<head>
+<meta charset="UTF-8">
+<style>
+  body{ margin:0 !important; }
+  .app{ display:flex !important; min-height:100vh !important; }
+  .content{ flex:1 !important; min-width:0 !important; }
+  .page-header{ display:flex !important; justify-content:space-between !important; align-items:center !important; flex-wrap:wrap !important; gap:12px !important; }
+  .header-actions{ display:flex !important; gap:10px !important; flex-wrap:wrap !important; }
+  .card-head{ display:flex !important; justify-content:space-between !important; gap:10px !important; flex-wrap:wrap !important; }
+  .table-wrap{ overflow-x:auto !important; -webkit-overflow-scrolling:touch !important; }
+  .table{ min-width:520px !important; }
+  .table-compact{ min-width:460px !important; }
+  .partida{ margin-top:16px !important; }
+  .partida-head{ display:flex !important; justify-content:space-between !important; gap:12px !important; flex-wrap:wrap !important; }
+  .partida-actions{ display:flex !important; gap:8px !important; flex-wrap:wrap !important; }
+  .modal-box{ width:95% !important; max-width:520px !important; box-sizing:border-box !important; max-height:90vh !important; overflow-y:auto !important; }
+  .form-grid{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:12px !important; }
+  .field input, .field select{ width:100% !important; box-sizing:border-box !important; }
+
+  @media (max-width: 768px){
+    .app{ flex-direction:column !important; }
+    .content{ padding:14px !important; width:100% !important; }
+    .page-header h1{ font-size:24px !important; }
+    .header-actions{ width:100% !important; }
+    .header-actions .btn{ flex:1 !important; text-align:center !important; }
+    .card{ padding:12px !important; }
+    .card-head .muted{ font-size:12px !important; }
+    .partida-head{ flex-direction:column !important; }
+    .partida-actions{ width:100% !important; }
+    .partida-actions .btn, .partida-actions form{ flex:1 !important; }
+    .partida-actions .btn{ width:100% !important; text-align:center !important; box-sizing:border-box !important; }
+    .modal{ padding:10px !important; align-items:flex-start !important; }
+    .modal-box{ margin-top:20px !important; padding:16px !important; }
+    .form-grid{ grid-template-columns:1fr 1fr !important; }
+    .modal-actions{ flex-direction:column-reverse !important; }
+    .modal-actions .btn{ width:100% !important; text-align:center !important; }
+  }
+  @media (max-width: 420px){
+    .header-actions{ flex-direction:column !important; }
+    .header-actions .btn{ width:100% !important; }
+    .form-grid{ grid-template-columns:1fr !important; }
+  }
+</style>
+</head>
 <body>
+<div th:replace="~{fragments/layout :: topbar}"></div>
 <div class="app">
     <aside th:replace="~{fragments/layout :: sidebar('partidas')}"></aside>
 
@@ -19,7 +64,6 @@
 
         <div th:replace="~{fragments/layout :: mensajes}"></div>
 
-        <!-- Tabla de posiciones automática -->
         <section class="card">
             <div class="card-head">
                 <h2>Tabla de posiciones</h2>
@@ -47,7 +91,6 @@
             </div>
         </section>
 
-        <!-- Partidas jugadas -->
         <section class="partida" th:each="pa : ${partidas}">
             <div class="partida-head">
                 <div>
@@ -56,7 +99,6 @@
                 </div>
                 <div class="partida-actions">
                     <button type="button" class="btn btn-sm btn-ghost btn-resultado-partida" th:data-partida="${pa.id}">Registrar puntos</button>
-                    <!-- ===== ELIMINAR PARTIDA - ARREGLADO ===== -->
                     <form class="inline" th:action="@{/partidas/{id}/eliminar(id=${pa.id})}" method="post"
                           onsubmit="return confirm('¿Eliminar ' + this.dataset.nombre + '? Se borrarán sus resultados y se recalcularán los puntos.')"
                           th:data-nombre="${pa.nombre}">
@@ -77,7 +119,6 @@
                         <td class="num" th:text="${r.kills}">0</td>
                         <td class="num strong" th:text="${r.puntos}">0</td>
                         <td class="col-actions">
-                            <!-- ===== QUITAR RESULTADO - ARREGLADO ===== -->
                             <form class="inline" th:action="@{/partidas/resultados/{id}/eliminar(id=${r.id})}" method="post"
                                   onsubmit="return confirm('¿Quitar el resultado de ' + this.dataset.equipo + ' en ' + this.dataset.partida + '?')"
                                   th:data-equipo="${r.equipo.nombre}" th:data-partida="${pa.nombre}">
@@ -96,7 +137,6 @@
     </main>
 </div>
 
-<!-- ===== Modal: nueva partida ===== -->
 <div class="modal" id="modalPartida" aria-hidden="true">
     <div class="modal-box modal-sm" role="dialog" aria-modal="true" aria-labelledby="tituloModalPartida">
         <h2 id="tituloModalPartida">Nueva partida</h2>
@@ -124,7 +164,6 @@
     </div>
 </div>
 
-<!-- ===== Modal: registrar puntos ===== -->
 <div class="modal" id="modalResultado" aria-hidden="true">
     <div class="modal-box modal-sm" role="dialog" aria-modal="true" aria-labelledby="tituloModalResultado">
         <h2 id="tituloModalResultado">Registrar puntos</h2>
@@ -163,6 +202,7 @@
 </div>
 
 <div th:replace="~{fragments/layout :: confirmar}"></div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
 <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
