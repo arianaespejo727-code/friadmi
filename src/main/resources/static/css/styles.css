@@ -139,17 +139,17 @@
 .app {
   display: flex !important;
   min-height: 100vh !important;
-  background: #000 !important;
+  background: #121214 !important;
   color: #fff !important;
   font-family: sans-serif !important;
 }
-body { background: #000 !important; color: #fff !important; font-family: sans-serif !important; padding: 0 !important; margin: 0 !important; }
+body { background: #121214 !important; color: #fff !important; font-family: sans-serif !important; padding: 0 !important; margin: 0 !important; }
 .content {
   flex: 1 !important;
   min-width: 0 !important;
   overflow-x: hidden !important;
   padding: 28px !important;
-  background: #000 !important;
+  background: #121214 !important;
   color: #fff !important;
 }
 .page-header {
@@ -224,13 +224,13 @@ body { background: #000 !important; color: #fff !important; font-family: sans-se
   .prize-hero { flex-direction: column !important; align-items: flex-start !important; gap: 15px !important; }
 }
 
-/* ===== SIDEBAR CON FONDO LOGO - NO LO TOQUES, ESTE YA ESTA BIEN ===== */
+/* ===== SIDEBAR - SOLO CAMBIE EL FONDO A COLOR ENTERO ===== */
 .sidebar {
   width: 240px !important;
   min-width: 240px !important;
   max-width: 240px !important;
-  background: #000 url('/img/PRINCIPAL.jpg?v=99') no-repeat center center !important;
-  background-size: cover !important;
+  background: #121214 !important;
+  background-image: none !important;
   border-right: 2px solid #facc15 !important;
   padding: 20px 14px !important;
   display: flex !important;
@@ -243,9 +243,8 @@ body { background: #000 !important; color: #fff !important; font-family: sans-se
   overflow: hidden !important;
 }
 .sidebar::before {
-  content: ""; position: absolute; inset: 0;
-  background: rgba(0,0,0,0.85) !important;
-  z-index: 0;
+  display: none !important;
+  content: none !important;
 }
 .sidebar > * { position: relative !important; z-index: 1 !important; }
 .sidebar a, .sidebar .brand, .sidebar .logo {
@@ -335,7 +334,7 @@ body { background: #000 !important; color: #fff !important; font-family: sans-se
 @media(max-width:800px){.main.wrap{flex-direction:column !important;}}
 
 /* ===== PARCHE FINAL ===== */
-html, body { margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; background: #000 !important; }
+html, body { margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; background: #121214 !important; }
 .app { display: flex !important; width: 100% !important; min-height: 100vh !important; align-items: stretch !important; }
 .sidebar { position: sticky !important; top: 0 !important; height: 100vh !important; }
 .content { flex: 1 !important; min-width: 0 !important; width: auto !important; overflow-x: auto !important; }
@@ -385,30 +384,27 @@ html, body { margin: 0 !important; padding: 0 !important; overflow-x: hidden !im
   border-radius: 10px !important;
 }
 
-/* ===== PARCHE FINAL LIMPIO - ESTE ES EL QUE MANDA ===== */
+/* ===== PARCHE FINAL LIMPIO - SOLO FONDO COLOR ENTERO ===== */
 body::before {
   display: none !important;
 }
 .sidebar {
-  background: #000 url('/img/PRINCIPAL.jpg?v=99') no-repeat center center !important;
-  background-size: cover !important;
+  background: #121214 !important;
+  background-image: none !important;
   position: sticky !important;
 }
 .sidebar::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: rgba(0,0,0,0.85) !important;
-  z-index: 0 !important;
+  display: none !important;
+  content: none !important;
 }
 .sidebar > * { position: relative !important; z-index: 1 !important; }
 .content {
-  background-color: #0a0a0a !important;
-  background-image: url('/img/LOGO.jpg?v=99') !important;
+  background-color: #121214 !important;
+  background-image: none !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
- background-size: 85% auto !important;
-  background-attachment: fixed !important;
+  background-size: auto !important;
+  background-attachment: scroll !important;
 }
 .content > * { position: relative !important; z-index: 1 !important; }
 .content .card, .content .stat {
